@@ -2,6 +2,23 @@ namespace SpriteKind {
     export const rock = SpriteKind.create()
     export const kaiju = SpriteKind.create()
 }
+/**
+ * 「Flower」
+ * 
+ * 森で迷ってしまったあなた、暗くなる前に家に帰ろう！
+ * 
+ * 工夫した点
+ * 
+ * .謎とき（仮）要素を追加した
+ * 
+ * .エネミーが居ないのでじっくり探索できる
+ * 
+ * .道中のルート分岐を用意して二度楽しめるようにした
+ * 
+ * .メモや会話要素を加えて没入感をだした
+ * 
+ * .BGMを付けた（BGMはトキワの森）
+ */
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     mySprite,
@@ -127,6 +144,7 @@ function bgm2 () {
     music.rest(music.beat(BeatFraction.Eighth))
     music.playTone(349, music.beat(BeatFraction.Eighth))
 }
+// メモを拾うことで謎ときのヒントを出した
 scene.onOverlapTile(SpriteKind.Player, sprites.castle.tileDarkGrass1, function (sprite, location) {
     if (memo == 0) {
         game.showLongText("メモがおちている", DialogLayout.Bottom)
@@ -380,6 +398,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, 
         pause(500)
     }
 })
+// ゲーム終了！
 scene.onOverlapTile(SpriteKind.Player, sprites.castle.tileDarkGrass2, function (sprite, location) {
     game.over(true, effects.confetti)
 })
@@ -558,11 +577,16 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     true
     )
 })
+// 森の奥へと続く道。今回は通れない。
+// 道があることを示唆することで迷っている感じをだした。
 scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
     game.showLongText("こちらではなさそうだ", DialogLayout.Bottom)
     mySprite.x += 10
     pause(1000)
 })
+// 赤い花を踏んだ時の処理。
+// 
+// 岩を触れた時にトリガーが発生し、話しかけられるようになる。
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, location) {
     if (redFlag == 1 && redFlag1 == 0) {
         game.showLongText("ひからびちゃう・・・・・・", DialogLayout.Bottom)
@@ -817,10 +841,12 @@ blueFlag = 0
 blueFlag2 = 0
 memo = 0
 water = 0
+// BGMは「トキワの森」
 forever(function () {
     music.setTempo(20)
     bgm1()
 })
+// BGMは「トキワの森」
 forever(function () {
     music.setTempo(20)
     bgm2()
